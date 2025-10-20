@@ -1,0 +1,116 @@
+/* Hero full-bleed background with soft gradient */
+.hero {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(1200px 600px at 10% 10%, #fde1ff 0%, transparent 60%),
+              radial-gradient(1000px 500px at 90% 20%, #e1f0ff 0%, transparent 60%),
+              linear-gradient(180deg, #ffffff, #f7f8fc);
+}
+
+/* Glass card */
+.card {
+  width: min(960px, 100%);
+  border-radius: 20px;
+  padding: 28px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  margin: 0 0 6px;
+  font-size: clamp(28px, 3.5vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 0 0 20px;
+  color: #5b5e6a;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+
+  @media (min-width: 520px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.btn {
+  appearance: none;
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f1222;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn.cat {
+  background: linear-gradient(180deg, #fff 0%, #ffe9ff 100%);
+  border: 1px solid rgba(255, 71, 240, 0.25);
+}
+
+.btn.dog {
+  background: linear-gradient(180deg, #fff 0%, #e9f4ff 100%);
+  border: 1px solid rgba(0, 122, 255, 0.25);
+}
+
+.viewer {
+  margin-top: 20px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 18, 34, 0.06);
+  min-height: 240px;
+  display: grid;
+  place-items: center;
+  overflow: clip;
+}
+
+.viewer img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.placeholder {
+  color: #7a7f8c;
+}
+
+.error {
+  color: #aa1133;
+  font-weight: 600;
+}
+
+.skeleton {
+  width: 100%;
+  height: 240px;
+  background: linear-gradient(90deg, #f2f4f8 25%, #e9ecf2 37%, #f2f4f8 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.3s ease infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+
