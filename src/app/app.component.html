@@ -185,6 +185,8 @@
     <div class="actions">
       <button class="btn cat" (click)="generateCat()">Gerar gatinho aleatório</button>
       <button class="btn dog" (click)="generateDog()">Gerar cachorrinho aleatório</button>
+      <button class="btn cat" (click)="generateCatVideo()">Gerar gatinho (GIF)</button>
+      <button class="btn dog" (click)="generateDogVideo()">Gerar cachorrinho (vídeo)</button>
     </div>
 
     <div class="viewer">
@@ -193,7 +195,11 @@
       } @else if (errorMessage()) {
         <div class="error">{{ errorMessage() }}</div>
       } @else if (currentImageUrl()) {
-        <img [src]="currentImageUrl()" alt="Bichinho fofo" />
+        @if (currentMediaKind() === 'video') {
+          <video class="media-video" [src]="currentImageUrl()" controls playsinline preload="metadata"></video>
+        } @else {
+          <img [src]="currentImageUrl()" alt="Bichinho fofo" />
+        }
       } @else {
         <div class="placeholder">Nada por aqui ainda…</div>
       }

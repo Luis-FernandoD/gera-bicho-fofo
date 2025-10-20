@@ -13,6 +13,7 @@ export class AppComponent {
 
   // sinais para imagem atual e estado de carregamento/erro
   currentImageUrl = signal<string | null>(null);
+  currentMediaKind = signal<'image' | 'video' | null>(null);
   isLoading = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
 
@@ -24,6 +25,23 @@ export class AppComponent {
 
   generateDog(): void {
     this.fetchRandomImage('dog');
+  }
+
+  generateCatVideo(): void {
+    // Usa GIF animado do cataas, exibido via <img>
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+    const url = `https://cataas.com/cat/gif?${Date.now()}`;
+    this.currentImageUrl.set(url);
+    this.currentMediaKind.set('image');
+    this.isLoading.set(false);
+  }
+
+  generateDogVideo(): void {
+    // Busca vídeo do random.dog garantindo extensão de vídeo
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+    this.fetchRandomDogVideoWithRetries(5);
   }
 
   private fetchRandomImage(kind: 'cat' | 'dog'): void {
@@ -39,6 +57,7 @@ export class AppComponent {
       const url = `https://cataas.com/cat?${Date.now()}`;
       // Como é uma imagem direta, não precisamos fazer GET para o binário; usamos a URL
       this.currentImageUrl.set(url);
+      this.currentMediaKind.set('image');
       this.isLoading.set(false);
     } else {
       this.http
@@ -48,6 +67,7 @@ export class AppComponent {
         .subscribe({
           next: (res) => {
             this.currentImageUrl.set(res.message);
+            this.currentMediaKind.set('image');
             this.isLoading.set(false);
           },
           error: () => {
@@ -56,5 +76,31 @@ export class AppComponent {
           },
         });
     }
+  }
+
+  private fetchRandomDogVideoWithRetries(triesLeft: number): void {
+    this.http
+      .get<{ url: string }>('https://random.dog/woof.json')
+      .subscribe({
+        next: (res) => {
+          const url = res.url;
+          const lower = url.toLowerCase();
+          const isVideo = lower.endsWith('.mp4') || lower.endsWith('.webm');
+          if (isVideo) {
+            this.currentImageUrl.set(url);
+            this.currentMediaKind.set('video');
+            this.isLoading.set(false);
+          } else if (triesLeft > 0) {
+            this.fetchRandomDogVideoWithRetries(triesLeft - 1);
+          } else {
+            this.errorMessage.set('Não encontrei vídeo agora. Tente novamente.');
+            this.isLoading.set(false);
+          }
+        },
+        error: () => {
+          this.errorMessage.set('Erro ao buscar vídeo.');
+          this.isLoading.set(false);
+        },
+      });
   }
 }

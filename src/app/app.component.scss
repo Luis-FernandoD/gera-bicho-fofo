@@ -92,6 +92,14 @@ h1 {
   object-fit: cover;
 }
 
+.media-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #000;
+  border-radius: 0;
+}
+
 .placeholder {
   color: #7a7f8c;
 }
